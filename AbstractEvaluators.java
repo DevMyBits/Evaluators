@@ -3,7 +3,7 @@ import java.util.Collection;
 /**
  * Created on : 27/03/2022
  * Author     : Yoann Meclot (DevMyBits)
- * Email      : yoannmeclot@hotmail.com
+ * Email      : devmybits@gmail.com
  */
 public abstract class AbstractEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> implements Evaluator<Eval, Item>
 {

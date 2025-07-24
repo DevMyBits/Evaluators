@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * Created on : 27/03/2022
  * Author     : Yoann Meclot (DevMyBits)
- * Email      : yoannmeclot@hotmail.com
+ * Email      : devmybits@gmail.com
  */
 public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends AbstractEvaluators<Eval, Item> implements Serializable
 {

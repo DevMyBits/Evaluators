@@ -4,7 +4,7 @@ import java.util.Collection;
 /**
  * Created on : 27/03/2022
  * Author     : Yoann Meclot (DevMyBits)
- * Email      : yoannmeclot@hotmail.com
+ * Email      : devmybits@gmail.com
  */
 public interface Evaluator<Eval, Item extends Evaluator.Evaluable<Eval>> extends Serializable
 {
