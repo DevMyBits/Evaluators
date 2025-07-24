@@ -7,7 +7,7 @@ import java.util.Arrays;
  * Author     : Yoann Meclot (DevMyBits)
  * Email      : devmybits@gmail.com
  */
-public final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends AbstractEvaluators<Eval, Item> implements Serializable
+final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends AbstractEvaluators<Eval, Item> implements Serializable
 {
     @Serial
     private static final long serialVersionUID = 662517613443663033L;
