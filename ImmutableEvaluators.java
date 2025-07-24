@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * Created on : 27/03/2022
- * Author     : Yoann Meclot (Msay2)
+ * Author     : Yoann Meclot (DevMyBits)
  * Email      : yoannmeclot@hotmail.com
  */
 public final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends AbstractEvaluators<Eval, Item> implements Serializable

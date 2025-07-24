@@ -3,7 +3,7 @@ import java.util.Collection;
 
 /**
  * Created on : 27/03/2022
- * Author     : Yoann Meclot (Msay2)
+ * Author     : Yoann Meclot (DevMyBits)
  * Email      : yoannmeclot@hotmail.com
  */
 public interface Evaluator<Eval, Item extends Evaluator.Evaluable<Eval>> extends Serializable
