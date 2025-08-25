@@ -96,6 +96,8 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     public void set(Item item, int index)
     {
         if (index < 0 || index > mLength) throw new IndexOutOfBoundsException("Array index out of bounds: index="+index+" size="+mLength);
+        if (item == null) return;
+
         mItems[index] = item;
     }
 
@@ -166,8 +168,39 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     @Override
     public void clear()
     {
-        for (int i = 0; i < mLength; i++) mItems[i] = null;
-        mLength = 0;
+        if (mLength <= 0) return;
+        if (mLength < 4)
+        {
+            int left = 0;
+            int right = mLength - 1;
+            while (left <= right) {
+                mItems[left++] = null;
+                mItems[right--] = null;
+            }
+            return;
+        }
+
+        int left = 0;
+        int right = mLength - 1;
+        int middleLeft = right / 2;
+        int middleRight = middleLeft;
+        while (left < right) {
+            mItems[left++] = null;
+            mItems[right--] = null;
+            mItems[middleLeft--] = null;
+            mItems[middleRight++] = null;
+
+            if (middleLeft < left)
+            {
+                if (middleRight == right) mItems[middleRight] = null;
+                break;
+            }
+            if (middleRight > right)
+            {
+                if (middleLeft == left) mItems[middleLeft] = null;
+                break;
+            }
+        }
     }
 
     @Override
