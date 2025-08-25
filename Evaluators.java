@@ -177,6 +177,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
                 mItems[left++] = null;
                 mItems[right--] = null;
             }
+            mLength = 0;
             return;
         }
 
@@ -190,17 +191,11 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
             mItems[middleLeft--] = null;
             mItems[middleRight++] = null;
 
-            if (middleLeft < left)
-            {
-                if (middleRight == right) mItems[middleRight] = null;
-                break;
-            }
-            if (middleRight > right)
-            {
-                if (middleLeft == left) mItems[middleLeft] = null;
-                break;
-            }
+            if (middleLeft < left) break;
+            if (middleRight > right) break;
         }
+
+        mLength = 0;
     }
 
     @Override
@@ -212,17 +207,45 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     @Override
     public void reverse()
     {
+        if (mLength < 4)
+        {
+            int left = 0;
+            int right = mLength - 1;
+            while (left <= right) {
+                Object start = mItems[left];
+                Object end = mItems[right];
+
+                mItems[right] = start;
+                mItems[left] = end;
+
+                left++;
+                right--;
+            }
+            return;
+        }
+
         int left = 0;
         int right = mLength - 1;
-        while (left <= right) {
+        int middleLeft = right / 2;
+        int middleRight = (mLength % 2 == 0) ? middleLeft + 1 : middleLeft;
+        while (left < right) {
             Object start = mItems[left];
             Object end = mItems[right];
+            Object mL = mItems[middleLeft];
+            Object mR = mItems[middleRight];
 
             mItems[right] = start;
             mItems[left] = end;
+            mItems[middleLeft] = mR;
+            mItems[middleRight] = mL;
 
             left++;
             right--;
+            middleLeft--;
+            middleRight++;
+
+            if (middleLeft < left) break;
+            if (middleRight > right) break;
         }
     }
 
