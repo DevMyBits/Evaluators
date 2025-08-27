@@ -184,16 +184,15 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int left = 0;
         int right = mLength - 1;
         int middleLeft = right / 2;
-        int middleRight = middleLeft;
-        while (left < right) {
+        int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
+
+        do {
             mItems[left++] = null;
             mItems[right--] = null;
             mItems[middleLeft--] = null;
             mItems[middleRight++] = null;
 
-            if (middleLeft < left) break;
-            if (middleRight > right) break;
-        }
+        } while (middleLeft >= left && middleRight <= right);
 
         mLength = 0;
     }
@@ -228,7 +227,8 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int right = mLength - 1;
         int middleLeft = right / 2;
         int middleRight = (mLength % 2 == 0) ? middleLeft + 1 : middleLeft;
-        while (left < right) {
+
+        do {
             Object start = mItems[left];
             Object end = mItems[right];
             Object mL = mItems[middleLeft];
@@ -244,9 +244,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
             middleLeft--;
             middleRight++;
 
-            if (middleLeft < left) break;
-            if (middleRight > right) break;
-        }
+        } while (middleLeft >= left && middleRight <= right);
     }
 
     @Override
@@ -424,8 +422,9 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int left = 0;
         int right = mLength - 1;
         int middleLeft = right / 2;
-        int middleRight = middleLeft;
-        while (left < right) {
+        int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
+
+        do {
             if (!mItems[left].equals(that.mItems[left])) return false;
             if (!mItems[right].equals(that.mItems[right])) return false;
             if (!mItems[middleLeft].equals(that.mItems[middleLeft])) return false;
@@ -435,18 +434,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
             middleRight++;
             left++;
             right--;
-
-            if (middleLeft < left)
-            {
-                if (middleRight == right) return mItems[middleRight].equals(that.mItems[middleRight]);
-                break;
-            }
-            if (middleRight > right)
-            {
-                if (middleLeft == left) return mItems[middleLeft].equals(that.mItems[middleLeft]);
-                break;
-            }
-        }
+        } while (middleLeft >= left && middleRight <= right);
         return true;
     }
 
@@ -481,35 +469,22 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int left = 0;
         int right = mLength - 1;
         int middleLeft = right / 2;
-        int middleRight = middleLeft;
-        while (left < right) {
+        int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
+        do {
             //noinspection unchecked
-            if (((Evaluable<Eval>)mItems[left]).toEvaluate(eval)) return left;
+            if (((Evaluable<Eval>) mItems[left]).toEvaluate(eval)) return left;
             //noinspection unchecked
-            if (((Evaluable<Eval>)mItems[right]).toEvaluate(eval)) return right;
+            if (((Evaluable<Eval>) mItems[right]).toEvaluate(eval)) return right;
             //noinspection unchecked
-            if (((Evaluable<Eval>)mItems[middleLeft]).toEvaluate(eval)) return middleLeft;
+            if (((Evaluable<Eval>) mItems[middleLeft]).toEvaluate(eval)) return middleLeft;
             //noinspection unchecked
-            if (((Evaluable<Eval>)mItems[middleRight]).toEvaluate(eval)) return middleRight;
+            if (((Evaluable<Eval>) mItems[middleRight]).toEvaluate(eval)) return middleRight;
 
             middleLeft--;
             middleRight++;
             left++;
             right--;
-
-            if (middleLeft < left)
-            {
-                if (middleRight == right) //noinspection unchecked
-                    return ((Evaluable<Eval>)mItems[middleRight]).toEvaluate(eval) ? middleRight : -1;
-                break;
-            }
-            if (middleRight > right)
-            {
-                if (middleLeft == left) //noinspection unchecked
-                    return ((Evaluable<Eval>)mItems[middleLeft]).toEvaluate(eval) ? middleLeft : -1;
-                break;
-            }
-        }
+        } while (middleLeft >= left && middleRight <= right);
         return -1;
     }
 }
