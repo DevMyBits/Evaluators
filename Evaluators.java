@@ -231,13 +231,13 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         do {
             Object start = mItems[left];
             Object end = mItems[right];
-            Object mL = mItems[middleLeft];
-            Object mR = mItems[middleRight];
+            Object sL = mItems[middleLeft];
+            Object eR = mItems[middleRight];
 
             mItems[right] = start;
             mItems[left] = end;
-            mItems[middleLeft] = mR;
-            mItems[middleRight] = mL;
+            mItems[middleLeft] = eR;
+            mItems[middleRight] = sL;
 
             left++;
             right--;
@@ -391,7 +391,6 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
 
             //noinspection unchecked
             Item item = (Item)mItems[i];
-
             if (item == null) builder.append("null");
             else builder.append(item);
         }
@@ -411,8 +410,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
             int left = 0;
             int right = mLength - 1;
             while (left <= right) {
-                if (!mItems[left].equals(that.mItems[left])) return false;
-                if (!mItems[right].equals(that.mItems[right])) return false;
+                if (!mItems[left].equals(that.mItems[left]) || !mItems[right].equals(that.mItems[right])) return false;
 
                 left++;
                 right--;
@@ -425,10 +423,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
 
         do {
-            if (!mItems[left].equals(that.mItems[left])) return false;
-            if (!mItems[right].equals(that.mItems[right])) return false;
-            if (!mItems[middleLeft].equals(that.mItems[middleLeft])) return false;
-            if (!mItems[middleRight].equals(that.mItems[middleRight])) return false;
+            if (!mItems[left].equals(that.mItems[left]) || !mItems[right].equals(that.mItems[right]) || !mItems[middleLeft].equals(that.mItems[middleLeft]) || !mItems[middleRight].equals(that.mItems[middleRight])) return false;
 
             middleLeft--;
             middleRight++;
@@ -452,13 +447,10 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
             int left = 0;
             int right = mLength - 1;
             while (left <= right) {
-                //noinspection unchecked
-                Evaluable<Eval> start = (Evaluable<Eval>)mItems[left];
-                //noinspection unchecked
-                Evaluable<Eval> end = (Evaluable<Eval>)mItems[right];
-
-                if (end.toEvaluate(eval)) return right;
-                if (start.toEvaluate(eval)) return left;
+                // noinspection unchecked
+                if (((Evaluable<Eval>)mItems[right]).toEvaluate(eval)) return right;
+                // noinspection unchecked
+                if (((Evaluable<Eval>)mItems[left]).toEvaluate(eval)) return left;
 
                 left++;
                 right--;

@@ -102,8 +102,7 @@ final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> ex
             int left = 0;
             int right = mLength - 1;
             while (left <= right) {
-                if (!mItems[left].equals(that.mItems[left])) return false;
-                if (!mItems[right].equals(that.mItems[right])) return false;
+                if (!mItems[left].equals(that.mItems[left]) || !mItems[right].equals(that.mItems[right])) return false;
 
                 left++;
                 right--;
@@ -113,29 +112,16 @@ final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> ex
         int left = 0;
         int right = mLength - 1;
         int middleLeft = right / 2;
-        int middleRight = middleLeft;
-        while (left < right) {
-            if (!mItems[left].equals(that.mItems[left])) return false;
-            if (!mItems[right].equals(that.mItems[right])) return false;
-            if (!mItems[middleLeft].equals(that.mItems[middleLeft])) return false;
-            if (!mItems[middleRight].equals(that.mItems[middleRight])) return false;
+        int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
+
+        do {
+            if (!mItems[left].equals(that.mItems[left]) || !mItems[right].equals(that.mItems[right]) || !mItems[middleLeft].equals(that.mItems[middleLeft]) || !mItems[middleRight].equals(that.mItems[middleRight])) return false;
 
             middleLeft--;
             middleRight++;
             left++;
             right--;
-
-            if (middleLeft < left)
-            {
-                if (middleRight == right) return mItems[middleRight].equals(that.mItems[middleRight]);
-                break;
-            }
-            if (middleRight > right)
-            {
-                if (middleLeft == left) return mItems[middleLeft].equals(that.mItems[middleLeft]);
-                break;
-            }
-        }
+        } while (middleLeft >= left && middleRight <= right);
         return true;
     }
 
@@ -154,13 +140,10 @@ final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> ex
             int left = 0;
             int right = mLength - 1;
             while (left <= right) {
-                //noinspection unchecked
-                Evaluable<Eval> start = (Evaluable<Eval>)mItems[left];
-                //noinspection unchecked
-                Evaluable<Eval> end = (Evaluable<Eval>)mItems[right];
-
-                if (end.toEvaluate(eval)) return right;
-                if (start.toEvaluate(eval)) return left;
+                // noinspection unchecked
+                if (((Evaluable<Eval>)mItems[left]).toEvaluate(eval)) return right;
+                // noinspection unchecked
+                if (((Evaluable<Eval>)mItems[right]).toEvaluate(eval)) return left;
 
                 left++;
                 right--;
@@ -171,8 +154,9 @@ final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> ex
         int left = 0;
         int right = mLength - 1;
         int middleLeft = right / 2;
-        int middleRight = middleLeft;
-        while (left < right) {
+        int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
+
+        do {
             //noinspection unchecked
             if (((Evaluable<Eval>)mItems[left]).toEvaluate(eval)) return left;
             //noinspection unchecked
@@ -186,20 +170,7 @@ final class ImmutableEvaluators<Eval, Item extends Evaluator.Evaluable<Eval>> ex
             middleRight++;
             left++;
             right--;
-
-            if (middleLeft < left)
-            {
-                if (middleRight == right) //noinspection unchecked
-                    return ((Evaluable<Eval>)mItems[middleRight]).toEvaluate(eval) ? middleRight : -1;
-                break;
-            }
-            if (middleRight > right)
-            {
-                if (middleLeft == left) //noinspection unchecked
-                    return ((Evaluable<Eval>)mItems[middleLeft]).toEvaluate(eval) ? middleLeft : -1;
-                break;
-            }
-        }
+        } while (middleLeft >= left && middleRight <= right);
         return -1;
     }
 }
