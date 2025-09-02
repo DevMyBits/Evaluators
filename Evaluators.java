@@ -17,7 +17,6 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         return new ImmutableEvaluators<>(items);
     }
 
-    @Serial
     private static final long serialVersionUID = 6203352090132307890L;
     private static final Object[] EMPTY_ITEMS = {};
 
@@ -65,6 +64,11 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     {
         if (item == null) return;
 
+        /*
+         * S'assurer que le tableau primitif possède le nombre d'emplacement requis.
+         * Si le nombre d'emplacement est supérieur ou égal au nombre d'emplacement requis, alors le valeur de retour est le tableau primitif envoyé en paramètre.
+         * Si le nombre d'emplacement est inférieur au nombre d'emplacement requis, alors la valeur de retour est un nouveau tableau primitif possédant les mêmes valeurs du tableau envoyé en paramètre avec le nombre d'emplacement requis.
+         */
         mItems = Items.ensureCapacity(mItems, mLength + 1);
         mItems[mLength++] = item;
     }
@@ -75,6 +79,11 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         if (index < 0 || index > mLength) throw new IndexOutOfBoundsException("Array index out of bounds: index="+index+" size="+mLength);
         if (item == null) return;
 
+        /*
+         * S'assurer que le tableau primitif possède le nombre d'emplacement requis.
+         * Si le nombre d'emplacement est supérieur ou égal au nombre d'emplacement requis, alors le valeur de retour est le tableau primitif envoyé en paramètre.
+         * Si le nombre d'emplacement est inférieur au nombre d'emplacement requis, alors la valeur de retour est un nouveau tableau primitif possédant les mêmes valeurs du tableau envoyé en paramètre avec le nombre d'emplacement requis.
+         */
         mItems = Items.ensureCapacity(mItems, mLength + 1);
 
         System.arraycopy(mItems, index, mItems, index + 1, mLength - index);
@@ -95,7 +104,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     @Override
     public void set(Item item, int index)
     {
-        if (index < 0 || index > mLength) throw new IndexOutOfBoundsException("Array index out of bounds: index="+index+" size="+mLength);
+        if (index < 0 || index >= mLength) throw new IndexOutOfBoundsException("Array index out of bounds: index="+index+" size="+mLength);
         if (item == null) return;
 
         mItems[index] = item;
@@ -112,7 +121,13 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     {
         Object[] items = collection.toArray();
         int length = items.length;
+        if (length == 0) return;
 
+        /*
+         * S'assurer que le tableau primitif possède le nombre d'emplacement requis.
+         * Si le nombre d'emplacement est supérieur ou égal au nombre d'emplacement requis, alors le valeur de retour est le tableau primitif envoyé en paramètre.
+         * Si le nombre d'emplacement est inférieur au nombre d'emplacement requis, alors la valeur de retour est un nouveau tableau primitif possédant les mêmes valeurs du tableau envoyé en paramètre avec le nombre d'emplacement requis.
+         */
         mItems = Items.ensureCapacity(mItems, mLength + length);
 
         System.arraycopy(items, 0, mItems, mLength, length);
@@ -127,7 +142,13 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
 
         Object[] items = collection.toArray();
         int length = items.length;
+        if (length == 0) return;
 
+        /*
+         * S'assurer que le tableau primitif possède le nombre d'emplacement requis.
+         * Si le nombre d'emplacement est supérieur ou égal au nombre d'emplacement requis, alors le valeur de retour est le tableau primitif envoyé en paramètre.
+         * Si le nombre d'emplacement est inférieur au nombre d'emplacement requis, alors la valeur de retour est un nouveau tableau primitif possédant les mêmes valeurs du tableau envoyé en paramètre avec le nombre d'emplacement requis.
+         */
         mItems = Items.ensureCapacity(mItems, mLength + length);
 
         System.arraycopy(mItems, index, mItems, index + length, mLength - index);
@@ -141,7 +162,13 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     {
         Object[] items = evaluator.toArray();
         int length = items.length;
+        if (length == 0) return;
 
+        /*
+         * S'assurer que le tableau primitif possède le nombre d'emplacement requis.
+         * Si le nombre d'emplacement est supérieur ou égal au nombre d'emplacement requis, alors le valeur de retour est le tableau primitif envoyé en paramètre.
+         * Si le nombre d'emplacement est inférieur au nombre d'emplacement requis, alors la valeur de retour est un nouveau tableau primitif possédant les mêmes valeurs du tableau envoyé en paramètre avec le nombre d'emplacement requis.
+         */
         mItems = Items.ensureCapacity(mItems, mLength + length);
 
         System.arraycopy(items, 0, mItems, mLength, length);
@@ -156,7 +183,13 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
 
         Object[] items = evaluator.toArray();
         int length = items.length;
+        if (length == 0) return;
 
+        /*
+         * S'assurer que le tableau primitif possède le nombre d'emplacement requis.
+         * Si le nombre d'emplacement est supérieur ou égal au nombre d'emplacement requis, alors le valeur de retour est le tableau primitif envoyé en paramètre.
+         * Si le nombre d'emplacement est inférieur au nombre d'emplacement requis, alors la valeur de retour est un nouveau tableau primitif possédant les mêmes valeurs du tableau envoyé en paramètre avec le nombre d'emplacement requis.
+         */
         mItems = Items.ensureCapacity(mItems, mLength + length);
 
         System.arraycopy(mItems, index, mItems, index + length, mLength - index);
@@ -226,7 +259,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int left = 0;
         int right = mLength - 1;
         int middleLeft = right / 2;
-        int middleRight = (mLength % 2 == 0) ? middleLeft + 1 : middleLeft;
+        int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
 
         do {
             Object start = mItems[left];
@@ -279,7 +312,7 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
     public Item[] toArray(Class<Item> type)
     {
         //noinspection unchecked
-        Item[] items = (Item[]) Array.newInstance(type, mLength);
+        Item[] items = (Item[])Array.newInstance(type, mLength);
 
         //noinspection SuspiciousSystemArraycopy
         System.arraycopy(mItems, 0, items, 0, mLength);
@@ -464,13 +497,13 @@ public class Evaluators<Eval, Item extends Evaluator.Evaluable<Eval>> extends Ab
         int middleRight = (mLength % 2 == 0) ? (middleLeft + 1) : middleLeft;
         do {
             //noinspection unchecked
-            if (((Evaluable<Eval>) mItems[left]).toEvaluate(eval)) return left;
+            if (((Evaluable<Eval>)mItems[left]).toEvaluate(eval)) return left;
             //noinspection unchecked
-            if (((Evaluable<Eval>) mItems[right]).toEvaluate(eval)) return right;
+            if (((Evaluable<Eval>)mItems[right]).toEvaluate(eval)) return right;
             //noinspection unchecked
-            if (((Evaluable<Eval>) mItems[middleLeft]).toEvaluate(eval)) return middleLeft;
+            if (((Evaluable<Eval>)mItems[middleLeft]).toEvaluate(eval)) return middleLeft;
             //noinspection unchecked
-            if (((Evaluable<Eval>) mItems[middleRight]).toEvaluate(eval)) return middleRight;
+            if (((Evaluable<Eval>)mItems[middleRight]).toEvaluate(eval)) return middleRight;
 
             middleLeft--;
             middleRight++;
